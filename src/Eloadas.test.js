@@ -1,6 +1,9 @@
 const Eloadas = require('./Eloadas');
 
-let eloadas = new Eloadas(10, 10);
+beforeEach (() => {
+    eloadas = new Eloadas(5, 10);
+})
+
 test('Alsó határoknál errort dob vissza', () => {
     expect(() => new Eloadas(0, 0)).toThrow("A bevitelnek pozitívnak kell lennie.");
 });
@@ -22,27 +25,11 @@ test('Alsó pozitív határoknál nem dob errort', () => {
 });
 
 test('A class tényleg létrehozza a mátrixot', () => {
-    expect(eloadas.foglalasok).not.toBeNull();
+    expect(eloadas.getSzabadHelyek()).not.toBeNull();
 });
 
-test('A mátrix megfelelő nagyságú sorral rendelkezik', () => {
-    expect(eloadas.foglalasok.length).toEqual(10);
-});
-
-test('A mátrix megfelelő nagyságú oszloppal rendelkezik', () => {
-    expect(eloadas.foglalasok[0].length).toEqual(10);
-});
-
-test('A mátrix default false értékekkel jön létre', () => {
-    ures = true;
-    for (let i = 0; i < eloadas.foglalasok.length; i++) {
-        for (let j = 0; j < eloadas.foglalasok[i].length; j++) {
-            if(eloadas.foglalasok[i][j]){
-                ures = false;
-            }
-        }
-    }
-    expect(ures).toEqual(true);
+test('A mátrix megfelelő nagysággal rendelkezik, és default üresen jön létre', () => {
+    expect(eloadas.getSzabadHelyek()).toEqual(50);
 });
 
 test('A lefoglal metódus tényleg lefoglal', () => {
@@ -51,41 +38,41 @@ test('A lefoglal metódus tényleg lefoglal', () => {
 
 test('A lefoglal metódus az első helyet foglalja le', () => {
     eloadas.lefoglal();
-    expect(eloadas.foglalasok[0][0]).toEqual(true);
+    expect(eloadas.Foglalt(1, 1)).toEqual(true);
 });
 
 test('A lefoglal metódus képes a második helyet is lefoglalni', () => {
     eloadas.lefoglal();
     eloadas.lefoglal();
-    expect(eloadas.foglalasok[0][1]).toBe(true);
+    expect(eloadas.Foglalt(1, 2)).toEqual(true);
 });
 
 test('A lefoglal metódus képes az első és második helyet is lefoglalni', () => {
     eloadas.lefoglal();
     eloadas.lefoglal();
-    expect(eloadas.foglalasok[0][0]).toBe(true);
-    expect(eloadas.foglalasok[0][1]).toBe(true);
+    expect(eloadas.Foglalt(1, 1)).toEqual(true);
+    expect(eloadas.Foglalt(1, 2)).toEqual(true);
 });
 
 test('A szabad helyek metódus tényleg jól számol', () => {
-    eloadas = new Eloadas(10, 10);
-    expect(eloadas.getSzabadHelyek()).toBe(100);
+    eloadas = new Eloadas(5, 10);
+    expect(eloadas.getSzabadHelyek()).toBe(50);
 });
 
 test('A szabad helyek metódus tényleg jól számol nem üres teremmel', () => {
     eloadas.lefoglal();
-    expect(eloadas.getSzabadHelyek()).toBe(99);
+    expect(eloadas.getSzabadHelyek()).toBe(49);
 });
 
 test('A szabad helyek metódus tényleg jól számol sok lefoglalással', () => {
-    eloadas = new Eloadas(10, 10);
+    eloadas = new Eloadas(5, 10);
     eloadas.lefoglal();
     eloadas.lefoglal();
     eloadas.lefoglal();
     eloadas.lefoglal();
     eloadas.lefoglal();
     eloadas.lefoglal();
-    expect(eloadas.getSzabadHelyek()).toBe(94);
+    expect(eloadas.getSzabadHelyek()).toBe(44);
 });
 
 test('A szabad helyek metódus tényleg jól számol majdnem tele teremmel', () => {
@@ -99,7 +86,7 @@ test('A szabad helyek metódus tényleg jól számol majdnem tele teremmel', () 
 });
 
 test('A teli metódus jól számol üres teremmel', () => {
-    eloadas = new Eloadas(10, 10);
+    eloadas = new Eloadas(5, 10);
     expect(eloadas.getTeli()).toBe(false);
 })
 
@@ -127,7 +114,7 @@ test('A teli metódus jól számol teli teremmel', () => {
 })
 
 test('A foglalt metódus működik ha nem foglalt', () => {
-    eloadas = new Eloadas(10, 10);
+    eloadas = new Eloadas(5, 10);
     expect(eloadas.Foglalt(1, 1)).toBe(false);
 })
 
@@ -137,7 +124,7 @@ test('A foglalt metódus működik ha foglalt', () => {
 })
 
 test('A foglalt metódus működik ha nem foglalt nem csak az első', () => {
-    eloadas = new Eloadas(10, 10);
+    eloadas = new Eloadas(5, 10);
     expect(eloadas.Foglalt(5, 6)).toBe(false);
 })
 
